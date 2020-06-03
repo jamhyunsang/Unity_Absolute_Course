@@ -9,15 +9,28 @@ public class BulletCtrl : MonoBehaviour
     public float damage = 20.0f;
     //총알의 발사 속도
     public float speed = 1000.0f;
-    // Start is called before the first frame update
-    void Start()
+
+    private Transform tr;
+    private Rigidbody rb;
+    private TrailRenderer trail;
+
+
+    private void Awake()
     {
-        GetComponent<Rigidbody>().AddForce(transform.forward * speed);
+        tr = GetComponent<Transform>();
+        rb = GetComponent<Rigidbody>();
+        trail = GetComponent<TrailRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        rb.AddForce(transform.forward * speed);
+    }
+    private void OnDisable()
+    {
+        trail.Clear();
+        tr.position = Vector3.zero;
+        tr.rotation = Quaternion.identity;
+        rb.Sleep();
     }
 }

@@ -85,7 +85,14 @@ public class FireCtrl : MonoBehaviour
         //Shake 효과 호출
         StartCoroutine(shake.ShakeCamera());
         //bullet 프리팹을 동적으로 생성
-        Instantiate(bullet, firePos.position, firePos.rotation);
+        //Instantiate(bullet, firePos.position, firePos.rotation);
+        var _bullet = GameManager.instance.GetBullet();
+        if(_bullet != null)
+        {
+            _bullet.transform.position = firePos.position;
+            _bullet.transform.rotation = firePos.rotation;
+            _bullet.SetActive(true);
+        }
         //파티클 실행
         cartridge.Play();
         muzzleFlash.Play();
