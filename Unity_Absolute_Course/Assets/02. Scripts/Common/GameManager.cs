@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     [Header("Enemy Create Info")]
     public Transform[] points;
     public GameObject enemy;
@@ -18,6 +19,11 @@ public class GameManager : MonoBehaviour
     public GameObject bulletPrefab;
     public int maxPool = 10;
     public List<GameObject> bulletPool = new List<GameObject>();
+
+    private bool isPaused;
+
+    public CanvasGroup inventoryCG;
+
     private void Awake()
     {
         if(instance == null)
@@ -35,6 +41,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        OnInentoryOpen(false);
         points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         if(points.Length>0)
         {
@@ -83,5 +90,24 @@ public GameObject GetBullet()
             obj.SetActive(false);
             bulletPool.Add(obj);
         }
+    }
+   public void  OnPauseClick()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = (isPaused) ? 0.0f : 1.0f;
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
+        var scripts = playerObj.GetComponents<MonoBehaviour>();
+        foreach(var script in scripts)
+        {
+            script.enabled = !isPaused;
+        }
+        var canvasGroup = GameObject.Find("weapon").GetComponent<CanvasGroup>();
+        canvasGroup.blocksRaycasts = !isPaused;
+    }
+    public void OnInentoryOpen(bool isOpened)
+    {
+        inventoryCG.alpha = (isOpened) ? 1.0f : 0.0f;
+        inventoryCG.interactable = isOpened;
+        inventoryCG.blocksRaycasts = isOpened;
     }
 }

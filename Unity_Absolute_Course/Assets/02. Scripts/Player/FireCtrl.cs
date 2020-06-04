@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions.Must;
+using UnityEngine.EventSystems;
 
 [Serializable]
 public struct PlayerSfx
@@ -54,6 +55,8 @@ public class FireCtrl : MonoBehaviour
     public float reloadTime = 2.0f;
     private bool isReloading = false;
 
+    public Sprite[] weaponIcon;
+    public Image weaponImage;
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +71,7 @@ public class FireCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (!isReloading&&Input.GetMouseButtonDown(0))
         {
             --remainingBullet;
@@ -129,4 +133,11 @@ public class FireCtrl : MonoBehaviour
     {
         magazineText.text = string.Format("<color=#ff0000>{0}</color>/{1}", remainingBullet, maxBullet);
     }
+
+    public void OnChangeWeapon()
+    {
+        currWeapon = (WeaponType)((int)++currWeapon % 2);
+        weaponImage.sprite = weaponIcon[(int)currWeapon];
+    }
+    
 }
