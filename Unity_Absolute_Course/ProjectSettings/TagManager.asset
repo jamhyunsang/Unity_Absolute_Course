@@ -22,8 +22,8 @@ TagManager:
   - BARREL
   - Bullet
   - E_Bullet
-  - 
-  - 
+  - Enemy
+  - Player
   - 
   - 
   - 

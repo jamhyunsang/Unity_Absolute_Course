@@ -1,3 +1,15 @@
-﻿{
-	"name": "CommonAD"
+{
+    "name": "CommonAD",
+    "references": [
+        "GUID:87a442da5e0f1bb41bd508f07bd6517c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

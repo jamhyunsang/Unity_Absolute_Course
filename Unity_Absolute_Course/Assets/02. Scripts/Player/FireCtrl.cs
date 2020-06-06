@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
+using System.Net.NetworkInformation;
 
 [Serializable]
 public struct PlayerSfx
@@ -57,6 +58,13 @@ public class FireCtrl : MonoBehaviour
 
     public Sprite[] weaponIcon;
     public Image weaponImage;
+
+    private int enemyLayer;
+    private int obstacleLayer;
+    private int layerMask;
+    private bool isFire = false;
+    private float nextFire;
+    public float fireRate = 0.1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -66,12 +74,40 @@ public class FireCtrl : MonoBehaviour
         _audio = GetComponent<AudioSource>();
 
         shake = GameObject.Find("CameraRig").GetComponent<Shake>();
+        enemyLayer = LayerMask.NameToLayer("Enemy");
+        obstacleLayer = LayerMask.NameToLayer("OBSTACLE");
+        layerMask = 1 << obstacleLayer | 1 << enemyLayer;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawRay(firePos.position, firePos.forward * 20.0f, Color.green);
         if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(firePos.position, firePos.forward, out hit, 20.0f,layerMask))
+        {
+            isFire = (hit.collider.CompareTag("Enemy"));
+        }
+        else
+        {
+            isFire = false;
+        }
+            if(!isReloading&&isFire)
+        { 
+            if(Time.time>nextFire)
+            {
+                --remainingBullet;
+                Fire();
+                if(remainingBullet==0)
+                {
+                    StartCoroutine(Reloading());
+                }
+                nextFire = Time.time + fireRate;
+            }
+        }
         if (!isReloading&&Input.GetMouseButtonDown(0))
         {
             --remainingBullet;

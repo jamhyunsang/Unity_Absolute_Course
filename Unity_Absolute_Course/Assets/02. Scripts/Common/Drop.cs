@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using DataInfo; 
 
 public class Drop : MonoBehaviour,IDropHandler
 {
@@ -11,6 +12,8 @@ public class Drop : MonoBehaviour,IDropHandler
        if(transform.childCount==0)
         {
             Drag.dragginItem.transform.SetParent(this.transform);
+            Item item = Drag.dragginItem.GetComponent<ItemInfo>().itemData;
+            GameManager.instance.AddItem(item);
         }
     }
 

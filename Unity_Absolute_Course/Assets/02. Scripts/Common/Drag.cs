@@ -44,6 +44,7 @@ public class Drag : MonoBehaviour, IDragHandler,IBeginDragHandler,IEndDragHandle
         if(itemTr.parent==inventroyTr)
         {
             itemTr.SetParent(itemListTr.transform);
+            GameManager.instance.RemoveItem(GetComponent<ItemInfo>().itemData);
         }
     }
 }
