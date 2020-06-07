@@ -48,6 +48,16 @@ public class BarrelCtrl : MonoBehaviour
         //오디오 컴포넌트를 추출해 저장
         _audio = GetComponent<AudioSource>();
 
+        //shake = GameObject.Find("CameraRig").GetComponent<Shake>();
+        StartCoroutine(GetShake());
+    }
+
+    IEnumerator GetShake()
+    {
+        while(!UnityEngine.SceneManagement.SceneManager.GetSceneByName("Play").isLoaded)
+        {
+            yield return null;
+        }
         shake = GameObject.Find("CameraRig").GetComponent<Shake>();
     }
 
